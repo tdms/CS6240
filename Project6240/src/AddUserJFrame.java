@@ -182,6 +182,7 @@ public class AddUserJFrame extends javax.swing.JFrame {
 		
 		public void actionPerformed( ActionEvent event )
 		{
+			flag=0;
 			try
 			{
 				conn=DriverManager.getConnection("jdbc:mysql://localhost/db1?"+"user=root&password=tanima");
@@ -228,11 +229,12 @@ public class AddUserJFrame extends javax.swing.JFrame {
 					stmt.execute("commit");
 					
 					JOptionPane.showMessageDialog(null, "You are succesfully registered!");
+					javax.swing.JFrame t = (JFrame) registerButton.getParent().getParent().getParent().getParent();
+					t.dispose();
 				}
 				
 				conn.close();
-				javax.swing.JFrame t = (JFrame) registerButton.getParent().getParent().getParent().getParent();
-				t.dispose();
+				
 			}
 	
 			catch(Exception e)

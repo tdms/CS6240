@@ -168,7 +168,6 @@ public class LoginUserJFrame extends javax.swing.JFrame {
 				
 				if(flag==1 && row_count>0)
 				{
-					//System.out.print("here1");
 					rs=null;
 					stmt.execute("select password from users where username=\'"+userNameTextField.getText()+"\'");
 					//System.out.print("here2");
@@ -193,6 +192,12 @@ public class LoginUserJFrame extends javax.swing.JFrame {
 						userNameTextField.setText("");
 						passwordTextField.setText("");
 					}					
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Invalid username!");
+					userNameTextField.setText("");
+					passwordTextField.setText("");
 				}
 				
 				conn.close();				
