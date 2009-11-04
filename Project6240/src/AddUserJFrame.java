@@ -186,9 +186,7 @@ public class AddUserJFrame extends javax.swing.JFrame {
 			{
 				conn=DriverManager.getConnection("jdbc:mysql://localhost/db1?"+"user=root&password=tanima");
 				stmt=conn.createStatement();
-				
-				//stmt.execute("select * from users where username="+userNameTextField.getText());
-				
+												
 				stmt.execute("select username from users");
 				rs = stmt.getResultSet();
 				
