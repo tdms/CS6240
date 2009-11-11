@@ -183,7 +183,7 @@ public class LoginUserJFrame extends javax.swing.JFrame {
 						javax.swing.JFrame t = (JFrame) loginButton.getParent().getParent().getParent().getParent();
 						t.dispose();
 						
-						addEvent=new AddEventJFrame();
+						addEvent=new AddEventJFrame(userNameTextField.getText());
 						addEvent.setLocationRelativeTo(null);
 						addEvent.setVisible(true);
 					}
