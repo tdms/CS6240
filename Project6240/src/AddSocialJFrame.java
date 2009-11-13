@@ -8,6 +8,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
@@ -175,9 +176,12 @@ public class AddSocialJFrame extends javax.swing.JFrame {
 	    // process color and font selections
 	    public void actionPerformed( ActionEvent event )
 	    {
-	    	addTwitter = new AddTwitterJFrame(userName);
+	    	addTwitter = new AddTwitterJFrame(userName, socialUserTextField.getText(), socialPasswordField.getText());
 			addTwitter.setLocationRelativeTo(null);
 			addTwitter.setVisible(true);
+			
+			javax.swing.JFrame t = (JFrame) addSocialButton.getParent().getParent().getParent().getParent();
+			t.dispose();
 	    }
 	}
 

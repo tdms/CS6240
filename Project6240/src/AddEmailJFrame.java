@@ -385,25 +385,25 @@ public class AddEmailJFrame extends javax.swing.JFrame {
 	    		if(typeList.getSelectedIndex()==0)
 	    		{
 	    			System.out.println("has subject");
-	    			type1="subjecthas";
+	    			type1="subject,has";
 	    		}
 		    	else if(typeList.getSelectedIndex()==1)
-		    			type1="subjecthasnot";
+		    			type1="subject,hasnot";
 		    		
 		    	
 		    }
 	    	else if(event.getSource()==typeList2)
 	    	{
 	    		if(typeList2.getSelectedIndex()==0)
-		    			type2="bodyhas";
+		    			type2="body,has";
 		    	else if(typeList2.getSelectedIndex()==1)
-		    			type2="bodyhasnot";	
+		    			type2="body,hasnot";	
 		    	
 		    }
 	    	else if(event.getSource()==notificationList)
 	    	{
 	    		if(notificationList.getSelectedIndex()==0)
-	    			notification="window";
+	    			notification="popup";
 	    		else if(notificationList.getSelectedIndex()==1)
 	    			notification="call";
 	    		else if(notificationList.getSelectedIndex()==2)
@@ -413,14 +413,14 @@ public class AddEmailJFrame extends javax.swing.JFrame {
 	    	}
 	    	else if(event.getSource()==addEmailButton)
 	    	{
-	    		condition="<"+"email,"+userEmailTextField.getText()+">"+"<"+"password,"+userPasswordField.getText()+">"+"<"+"notemail,"+notEmailTextField.getText()+">"+"<"+type1+","+subjectTextField.getText().trim()+">"+"<"+type2+","+bodyTextField.getText().trim()+">";
+	    		condition="<"+"userid,"+userEmailTextField.getText()+">"+"<"+"password,"+userPasswordField.getText()+">"+"<"+"sender,has,"+notEmailTextField.getText()+">"+"<"+type1+","+subjectTextField.getText().trim()+">"+"<"+type2+","+bodyTextField.getText().trim()+">";
 	    		System.out.println("condition in : "+condition);
 	    		
 	    		try{
 	    			conn=DriverManager.getConnection("jdbc:mysql://localhost/db1?"+"user=root&password=tanima");
 	    			stmt=conn.createStatement();
 	    			
-	    			stmt.execute("insert into events(username,event_type,event_condition,notification) values(\'"+userName+"\',\'mail\',\'"+condition+"\'"+","+"\'"+notification+"\')");
+	    			stmt.execute("insert into events(username,event_type,event_condition,notification) values(\'"+userName+"\',\'gmail\',\'"+condition+"\'"+","+"\'"+notification+"\')");
 					stmt.execute("commit");
 					
 					JOptionPane.showMessageDialog(null, "Event sucessfully added!");
