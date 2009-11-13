@@ -1,7 +1,9 @@
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -10,6 +12,9 @@ import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -36,6 +41,12 @@ public class AddUserJFrame extends javax.swing.JFrame {
 	private JLabel jLabel4;
 	private JLabel jLabel3;
 
+	private Connection conn=null;
+	private Statement stmt;
+	private ResultSet rs=null;
+		
+	private ButtonHandler bhandler;
+	
 	/**
 	* Auto-generated main method to display this JFrame
 	/
@@ -66,7 +77,10 @@ public class AddUserJFrame extends javax.swing.JFrame {
 			{
 				registerButton = new JButton();
 				registerButton.setText("Register !");
+				bhandler=new ButtonHandler();
+				registerButton.addActionListener(bhandler);
 			}
+			
 			{
 				jLabel5 = new JLabel();
 				jLabel5.setText("Enter information for registration");
@@ -162,5 +176,71 @@ public class AddUserJFrame extends javax.swing.JFrame {
 			e.printStackTrace();
 		}
 	}
-
+	private class ButtonHandler implements ActionListener
+	{
+		int row_count, flag=0;
+		
+		public void actionPerformed( ActionEvent event )
+		{
+			flag=0;
+			try
+			{
+				conn=DriverManager.getConnection("jdbc:mysql://localhost/db1?"+"user=root&password=tanima");
+				stmt=conn.createStatement();
+												
+				stmt.execute("select username from users");
+				rs = stmt.getResultSet();
+				
+				row_count=0;
+				while(rs.next())
+				{
+					row_count++;
+					if(rs.getString(1).equals(userNameTextField.getText()))
+					{
+						JOptionPane.showMessageDialog(null, "User name already exists ! Try another name");
+						flag=1;
+						userNameTextField.setText("");
+						jPasswordField1.setText("");
+						jPasswordField2.setText("");
+						jTextField1.setText("");
+						
+						break;
+					}					
+				}
+				
+				if(!jPasswordField1.getText().equals(jPasswordField2.getText()))
+				{
+					JOptionPane.showMessageDialog(null, "Password does not match, please confirm the passwords again");
+					flag=1;
+					userNameTextField.setText("");
+					jPasswordField1.setText("");
+					jPasswordField2.setText("");
+					jTextField1.setText("");					
+				}
+					
+				System.out.print("count: "+row_count+"flag "+flag); //getRow()
+				
+				if(flag==0)
+				{
+					System.out.println("insert now:");
+					System.out.print("insert into users values("+userNameTextField.getText().trim()+","+jPasswordField1.getText().trim()+","+jTextField1.getText()+")");
+					
+					stmt.execute("insert into users(username,password,cellphone_number) values(\'"+userNameTextField.getText().trim()+"\',\'"+jPasswordField1.getText().trim()+"\',\'"+jTextField1.getText()+"\')");
+					stmt.execute("commit");
+					
+					JOptionPane.showMessageDialog(null, "You are succesfully registered!");
+					javax.swing.JFrame t = (JFrame) registerButton.getParent().getParent().getParent().getParent();
+					t.dispose();
+				}
+				
+				conn.close();
+				
+			}
+	
+			catch(Exception e)
+			{
+				System.out.println("Exception: "+e.getMessage());
+			}
+		}
+	}
 }

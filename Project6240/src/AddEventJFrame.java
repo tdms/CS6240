@@ -45,6 +45,7 @@ public class AddEventJFrame extends javax.swing.JFrame {
 	private JMenuItem jMenuItem1;
 	private JMenu jMenu1;
 	
+	private String userName;
 	private AddEmailJFrame addEmail;
 	private AddNewsJFrame addNews;
 	private AddSocialJFrame addSocial;
@@ -62,8 +63,10 @@ public class AddEventJFrame extends javax.swing.JFrame {
 		});
 	}*/
 	
-	public AddEventJFrame() {
+	public AddEventJFrame(String uName) {
 		super("Home");
+		
+		userName=new String(uName);
 		initGUI();
 	}
 	
@@ -147,7 +150,7 @@ public class AddEventJFrame extends javax.swing.JFrame {
 			}
 			{
 				jLabel1 = new JLabel();
-				jLabel1.setText("Welcome User !");
+				jLabel1.setText("Welcome "+userName+" !");
 			}
 			{
 				logoutButton = new JButton();
@@ -166,7 +169,7 @@ public class AddEventJFrame extends javax.swing.JFrame {
 				.addComponent(logoutButton, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
 				.addContainerGap());
 			pack();
-			setSize(550, 400);
+			setSize(550, 500);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -180,14 +183,14 @@ public class AddEventJFrame extends javax.swing.JFrame {
 	    	if(event.getSource()==jMenuItem1)
 	    	{
 	    		System.out.println("Email");
-	    		addEmail = new AddEmailJFrame();
+	    		addEmail = new AddEmailJFrame(userName);
 				addEmail.setLocationRelativeTo(null);
 				addEmail.setVisible(true);
 	    	}
 	    	else if(event.getSource()==jMenuItem2)
 	    	{
 	    		System.out.println("Social Networks");
-	    		addSocial = new AddSocialJFrame();
+	    		addSocial = new AddSocialJFrame(userName);
 				addSocial.setLocationRelativeTo(null);
 				addSocial.setVisible(true);
 	    	}
