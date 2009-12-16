@@ -1,0 +1,84 @@
+<body>
+	<p>Welcome to SMSLib for Java.</p>
+	<h3>What is SMSLib?</h3>
+	<p>
+		SMSLib for Java is a Java API which you can use in order to send and/or receive SMS Messages through a GSM modem or phone connected to your PC.
+	</p>
+	<h3>Installation Checklist.</h3>
+	<p>
+		SMSLib is just a jar file that you must copy in your classpath or in Java's "lib/ext" directory.<br />
+		You should also install the following software components:
+		<ul>
+			<li>SUN <a href="http://java.sun.com">JDK</a> v1.4.2 or newer.</li>
+			<li><a href="http://ant.apache.org">Apache Ant</a>. Used for building the SMSLib sources.</li>
+			<li><a href="http://logging.apache.org/log4j">Apache Log4J</a>. Used for SMSLib logging needs.</li>
+			<li>A Serial Communications Library. SMSLib can be used either with <a href="http://www.rxtx.org">RxTx</a> or <a href="http://javashoplm.sun.com/ECom/docs/Welcome.jsp?St oreId=22&PartDetailId=7235-javacomm-2.0-spec-oth-J Spec&SiteId=JSC&TransactionId=noreg">SUN Java Comm v2.0 for Win32</a></li>
+		</ul>
+		If you are using virtual comm ports on Windows (i.e. ports that are mapped through USB/IrDA/Bluetooth connections) it is advisable to use the Java Comm package.
+	</p>
+	<h3>Installation of SerialComm Libraries.</h3>
+		<p>
+			If you are using SUN Java Comm, do the following copies:
+			<ul>
+				<li>Copy "comm.jar" to "(JDKDIR)\jre\lib\ext" directory</li>
+				<li>Copy "javax.comm.properties" to "(JDKDIR)\jre\lib" directory</li>
+				<li>Copy "win32com.dll" file to "(JDKDIR)\jre\bin" directory</li>
+			
+			</ul>
+			If you have a separate JRE, do the same copies in the relevant JRE directories.
+		</p>
+		<p>
+			If you are using RxTx, do the following copies:
+			<ul>
+				<li>Copy "RXTXComm.jar" to "(JDKDIR)\jre\lib\ext" directory</li>
+				<li>Copy "rxtxSerial.dll" file to "(JDKDIR)\jre\bin" directory</li>
+				<li>For Linux, copy "librxtxSerial.so" file to "(JDKDIR)\jre\lib" directory</li>
+			</ul>
+			If you have a separate JRE, do the same copies in the relevant JRE directories.<br />
+			<strong>Be sure to use the correct RxTx binaries (libraries - .dll / .so) for your operating system!</strong>
+		</p>
+	<h3>Before first use of SMSLib.</h3>
+	<p>
+		There is a modification that you should do before attemping to use SMSLib. This has to do with the fact that there are two SerialComm Libraries that can be used. Depending on whether you are using RxTx or JavaComm you must alter some imports in the code.
+		<ul>
+			<li><strong>CSerialDriver.java</strong>: If you are using RxTx, "<strong>import gnu.io.*;</strong>" should be added. If you are using JavaComm, "<strong>import javax.comm.*;</strong>" should be added.</li>
+		</ul>
+	</p>
+	<h3>Compilation.</h3>
+	<p>
+		SMSLib can be built with the Apache Ant utility. The parameters accepted from the supplied ant script are:
+		<ul>
+			<li><strong>clean</strong>: Cleans up directories.</li>
+			<li><strong>all</strong>: Compiles everything, creates JavaDocs and jar files.</li>
+			<li><strong>compile</strong>: Compiles source files only.</li>
+			<li><strong>docs</strong>: Creates Javadoc pages.</li>
+		</ul>
+		Before attemping to compile, you should create a <strong>xxxx-build.properties</strong> file, where xxxx is your machine user name, in which you should set some common paths. Have a look at the <strong>tdelenik-build.properties</strong> supplied and create a similar one with your own name.
+	</p>
+	<h3>Logging.</h3>
+	<p>
+		SMSLib uses Log4J for its logging needs. By default, its error level is set to WARN and the output is directed to a basic console appender. If you wish to configure Log4J youself with extra settings, you should add a file named "smslib-log.conf" in your apps directory, which will contain the Log4J settings. This file, if available, is read during SMSLib startup and configures its logging.<br />
+		For your convinience, a sample "smslib-log.conf" is provided in the distribution package, directory "build". This Log4J configuration file enables full debbuging, console-output mode.<br />
+		<strong>Starting from SMSLib v2.1.1</strong>, there is a quicker way to enable full, console-output debugging. Just start your application with the "smslib.debug=true" property (the actual value of the property does not matter). When SMSLib sees this property defined, it will set its logger to console and the logging level to all. This is a quick way to enable full debbugging info, without messing with recompilations or log4j definition files.
+	</p>
+	<h3>Example Files.</h3>
+	<p>
+		There are some example files that you can review to see how to implement SMSLib functionality in your own applications.
+		<ul>
+			<li><strong>SendMessage</strong>.java: Basic logic on how to send a message via your GSM modem/phone</li>
+			<li><strong>SendWapSIMessage.java</strong>.java: Basic logic on how to send a WAP PUSH (SI) message.</li>
+			<li><strong>ReadMessages</strong>.java: Basic logic on how to read incoming messages from your GSM modem/phone (Synchronous method).</li>
+			<li><strong>ReadMessagesAsync</strong>.java: Basic logic on how to read incoming messages from your GSM modem/phone (Asynchronous method).</li>
+		</ul>
+	</p>
+	<br /><br />
+	<p>
+		Useful links: &nbsp;
+		<a href="http://project.smslib.org">Project pages</a>&nbsp;&nbsp;
+		<a href="http://bugs.smslib.org">Bug Reports</a>&nbsp;&nbsp;
+		<a href="http://featurereq.smslib.org">Feature Requests</a>&nbsp;&nbsp;
+		<a href="http://forum.smslib.org">Help & Support forum</a>&nbsp;&nbsp;
+		<a href="http://smslib.org/getting_started.shtml">Further reading</a>&nbsp;&nbsp;
+		<br />For latest information, please visit <a href="http://smslib.org">http://smslib.org</a>
+	</p>
+</body>

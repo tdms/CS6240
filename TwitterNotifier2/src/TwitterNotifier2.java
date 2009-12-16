@@ -23,10 +23,20 @@ class EventConditionParser
 	public String[] statusHasNot = new String[10];
 	int messageHasIndex, messageHasNotIndex, statusHasIndex, statusHasNotIndex;
 	
-	
+	int min2(int a, int b)
+	{
+		if(a<b)
+			return a;
+		else
+			return b;
+	}
 	void parseCondition(String condition)
 	{
 		//System.out.println(condition);
+		int totalLength = condition.length();
+		
+		System.out.println("String in parseCondition: " + condition);
+		
 		StringTokenizer st = new StringTokenizer(condition,">");
 		String temp,temp1, temp2,temp3="";
 		String definedString;
@@ -70,8 +80,8 @@ class EventConditionParser
 	        if(temp1.compareTo(ds1) == 0)
 	        {
 	        	int len = ds1.length() + 1;
-	        	temp1 = temp.substring(len + 1,len + 1 + ds3.length());	        
-		        temp2 = temp.substring(len + 1,len + 1 + ds4.length());	       
+	        	temp1 = temp.substring(len + 1,min2(len + 1 + ds3.length(), totalLength));	        
+		        temp2 = temp.substring(len + 1,min2(len + 1 + ds4.length(), totalLength));	       
 	        	
 		         if(temp2.compareTo(ds4)==0)
 		         {
@@ -91,8 +101,8 @@ class EventConditionParser
 	        else if(temp2.compareTo(ds2) == 0)
 	        {
 	        	int len = ds2.length() + 1;
-	        	temp1 = temp.substring(len + 1,len + 1 + ds3.length());	        
-		        temp2 = temp.substring(len + 1,len + 1 + ds4.length());	       
+	        	temp1 = temp.substring(len + 1,min2(len + 1 + ds3.length(),totalLength));	        
+		        temp2 = temp.substring(len + 1,min2(len + 1 + ds4.length(),totalLength));	       
 	        	
 		         if(temp2.compareTo(ds4)==0)
 		         {
@@ -167,7 +177,7 @@ public class TwitterNotifier2 implements Runnable {
 	String password ="";
 	String clientName = "";	//as registered to our system
 	String notificationType = "";
-	long sleepTime = 6000;	//in milisec
+	long sleepTime = 73000;	//in milisec
 	Api api;
 	List dmr;				//for direct message list
 	List followers;			//for followers list
@@ -188,6 +198,7 @@ public class TwitterNotifier2 implements Runnable {
 		
 		try{
 			conn=DriverManager.getConnection("jdbc:mysql://localhost/db1?"+"user=root&password=munir");
+			//conn=DriverManager.getConnection("jdbc:mysql://localhost/db1?"+"user=root&password=tanima");
 			stmt=conn.createStatement();
 		}
 		catch(Exception e)

@@ -1,0 +1,16 @@
+
+<project name="smslib4j.libraries">
+
+	<available file="${log4j.jar}" type="file" property="log4j.jar.present" />
+	<fail message="${log4j.jar} doesn't exist! see build.properties file" unless="log4j.jar.present" />
+
+	<available file="${comm.jar}"  type="file" property="comm.jar.present" />
+	<fail message="${comm.jar} doesn't exist! see build.properties file" unless="comm.jar.present" />
+	
+	
+	<path id="compile.classpath">
+		<pathelement location="${comm.jar}" />
+		<pathelement location="${log4j.jar}" />
+	</path>
+
+</project>

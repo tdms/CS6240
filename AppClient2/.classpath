@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="E:/Downloads/mysql-connector-java-5.1.10-bin.jar"/>
+	<classpathentry kind="lib" path="D:/UVA/sw_engg/JUnit/AppClient2/lib/activation.jar"/>
+	<classpathentry kind="lib" path="D:/UVA/sw_engg/JUnit/AppClient2/lib/cmu_time_awb.jar"/>
+	<classpathentry kind="lib" path="D:/UVA/sw_engg/JUnit/AppClient2/lib/cmu_us_kal.jar"/>
+	<classpathentry kind="lib" path="D:/UVA/sw_engg/JUnit/AppClient2/lib/cmudict04.jar"/>
+	<classpathentry kind="lib" path="D:/UVA/sw_engg/JUnit/AppClient2/lib/cmulex.jar"/>
+	<classpathentry kind="lib" path="D:/UVA/sw_engg/JUnit/AppClient2/lib/cmutimelex.jar"/>
+	<classpathentry kind="lib" path="D:/UVA/sw_engg/JUnit/AppClient2/lib/en_us.jar"/>
+	<classpathentry kind="lib" path="D:/UVA/sw_engg/JUnit/AppClient2/lib/freetts.jar"/>
+	<classpathentry kind="lib" path="D:/UVA/sw_engg/JUnit/AppClient2/lib/freetts-jsapi10.jar"/>
+	<classpathentry kind="lib" path="D:/UVA/sw_engg/JUnit/AppClient2/lib/jsapi.jar"/>
+	<classpathentry kind="lib" path="D:/UVA/sw_engg/JUnit/AppClient2/lib/mbrola.jar"/>
+	<classpathentry kind="lib" path="D:/UVA/sw_engg/JUnit/AppClient2/lib/MixedVoices.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

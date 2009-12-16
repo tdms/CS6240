@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Implementation-Title: SMSLib for Java
+Implementation-Version: @version@
+Main-Class: org.smslib.CService
+Created-By: Thanasis Delenikas

@@ -1,0 +1,147 @@
+<project name="smslib4j" default="usage" basedir="." >
+	
+	<property file="${user.name}-build.properties"/>
+	<property file="build.properties"/>	
+	<import file="./build-libraries.xml"/>
+	
+	<property name="base" value="."/>
+
+	<property name="lib.version" value="2.1.4"/>
+	<property name="lib.source.dir" value="src/java/"/>
+	<property name="lib.jar.filename" value="smslib-${lib.version}.jar"/>
+	<property name="lib.manifest" value="build/SMSLib.mf"/>
+
+	<property name="smsserver.version" value="2.1.2"/>
+	<property name="smsserver.source.dir" value="${lib.source.dir}smsserver/"/>
+	<property name="smsserver.jar.filename" value="smsserver-${smsserver.version}.jar"/>
+	<property name="smsserver.manifest" value="build/SMSServer.mf"/>
+
+	<property name="examples.source.dir" value="${lib.source.dir}examples/"/>
+	<property name="misc.source.dir" value="${lib.source.dir}misc/"/>
+
+	<property name="dist.dir" value="dist"/>
+	<property name="dist.tmp" value="${dist.dir}/tmp"/>
+	<property name="class.dir" value="${dist.dir}/classes"/>
+	<property name="jar.dir" value="${dist.dir}/lib"/>
+
+	<property name="docs.dir" value="docs"/>
+
+	<!-- compile props -->
+	<property name="debug" value="true"/>
+	<property name="source" value="1.4"/>
+	
+
+	<target name="usage">
+		<echo>
+		SMSLib for Java
+		(c) 2002-2007 Thanasis Delenikas, Athens/GREECE.
+		Please visit http://smslib.org for latest information.
+		SMSLib is distributed under the LGPL license.
+	
+		Accepted targets:
+			clean:   Clean everything.
+			all:     Build everything.
+			compile: Just compile sources.
+			docs:    Compile Javadocs.
+		</echo>
+	</target>
+
+	<target name="docs" depends="build.docs" />
+
+	<target name="compile" depends="build.lib, build.examples, build.misc, build.smsserver" />
+
+	<target name="all" depends="build.lib, build.examples, build.misc, build.smsserver, build.docs, smslib.jar, smsserver.jar" />
+
+	<target name="clean">
+		<delete dir="${dist.dir}/" />
+		<delete dir="${docs.dir}/" />
+	</target>
+
+	<target name="build.docs" depends="build.lib">
+		<mkdir dir="${docs.dir}" />
+		<javadoc sourcepath="${lib.source.dir}"
+			destdir="${docs.dir}"
+			packagenames="org.smslib, org.smslib.handler"
+				version="true"
+				public="true"
+				author="true"
+				use="true"
+				overview="build/smslib-overview.html"
+				doctitle="SMSLib for Java version ${lib.version}&lt;br&gt;API Specification"
+				windowtitle="SMSLib for Java ${lib.version}"
+				header="&lt;b&gt;SMSLib for Java ${lib.version}&lt;/b&gt;"
+				bottom="(c) 2002-2007 Thanasis Delenikas, Athens/GREECE - http://smslib.org">
+			<classpath refid="compile.classpath"/>
+		</javadoc>
+	</target>
+
+	<target name="build.lib">
+		<mkdir dir="${class.dir}" />
+		<javac srcdir="${lib.source.dir}"
+			destdir="${class.dir}"
+			classpathref="compile.classpath"
+			debug="${debug}"
+			source="${source}">
+		</javac>
+	</target>
+
+	<target name="build.examples" depends="build.lib">
+		<javac srcdir="${examples.source.dir}"
+			destdir="${class.dir}"
+			classpathref="compile.classpath"
+			debug="${debug}"
+			source="${source}">
+		</javac>
+	</target>
+
+	<target name="build.misc" depends="build.lib">
+		<javac srcdir="${misc.source.dir}"
+			destdir="${class.dir}"
+			debug="${debug}"
+			source="${source}">
+		</javac>
+	</target>
+
+	<target name="build.smsserver" depends="build.lib">
+		<javac srcdir="${smsserver.source.dir}"
+			destdir="${class.dir}"
+			debug="${debug}"
+			source="${source}">
+		</javac>
+	</target>
+
+	<target name="lib.pre-jar">
+		<mkdir dir="${jar.dir}"/>
+		<filter token="version" value="${lib.version}" />
+		<copy file="${lib.manifest}" tofile="${jar.dir}/SMSLib.mf" filtering="true"/>
+	</target>
+
+	<target name="smsserver.pre-jar">
+		<mkdir dir="${jar.dir}"/>
+		<filter token="version" value="${smsserver.version}" />
+		<copy file="${smsserver.manifest}" tofile="${jar.dir}/SMSServer.mf" filtering="true"/>
+	</target>
+
+	<target name="smslib.jar" depends="build.lib, lib.pre-jar">
+		<delete>
+			<fileset dir="${jar.dir}">
+				<include name="smslib*.jar"/>
+			</fileset>
+		</delete>
+		<jar jarfile="${jar.dir}/${lib.jar.filename}" basedir="${class.dir}"
+			includes="org/smslib/*.class, org/smslib/handler/*.class"
+			manifest="${jar.dir}/SMSLib.mf"/>
+	</target>
+
+	<target name="smsserver.jar" depends="build.lib, build.smsserver, smsserver.pre-jar">
+		<delete>
+			<fileset dir="${jar.dir}">
+				<include name="smsserver*.jar"/>
+			</fileset>
+		</delete>
+		<jar jarfile="${jar.dir}/${smsserver.jar.filename}" basedir="${class.dir}"
+			includes="smsserver/*.class"
+			manifest="${jar.dir}/SMSServer.mf"/>
+	</target>
+
+</project>

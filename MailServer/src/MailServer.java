@@ -9,6 +9,7 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 
+
 public class MailServer implements Runnable{
 	Thread t;
 	
@@ -27,7 +28,7 @@ public class MailServer implements Runnable{
     static boolean showStructure = false;
     static boolean saveAttachments = false;    
     static int attnum = 1;
-    static int newMessagesCount = 50;
+    static int newMessagesCount = 10;
 
     //info for a particular mail
 
@@ -37,6 +38,10 @@ public class MailServer implements Runnable{
     static String mailFlags = null;
     static String mailContent = null;
     
+    
+	String clientName = null;
+	String notificationType = null;
+
     private Folder folder = null;
     private Store store = null;
    	int msgnum = -1;
@@ -88,6 +93,7 @@ public class MailServer implements Runnable{
 		
 		try{
 			conn=DriverManager.getConnection("jdbc:mysql://localhost/db1?"+"user=root&password=munir");
+			//conn=DriverManager.getConnection("jdbc:mysql://localhost/db1?"+"user=root&password=tanima");
 			stmt=conn.createStatement();
 		}
 		catch(Exception e)
@@ -101,9 +107,10 @@ public class MailServer implements Runnable{
 		String sendData = "server_mailserver";
 		sm.sendData(sendData);
 
-		
-		
-		//prev initialization
+    }
+    boolean initSessions()
+    {
+    	//prev initialization
         totalMsg=new String();
         
     	InputStream msgStream = System.in;
@@ -123,12 +130,16 @@ public class MailServer implements Runnable{
 			    		    
 			    if (folder == null) {
 					System.out.println("No default folder");
-					System.exit(1);
+					//System.exit(1);
+					return false;
 			    }
 		    }
 		    catch(Exception e)
 		    {
-		    	System.out.println("Caught Exception.");
+		    	//System.out.println("Caught Exception. Invalid user-id/password for gmail.");
+		    	//System.out.println("UserID: " + user);
+		    	//System.out.println("Password: " + password);
+		    	return false;
 		    }
 		    
 		    
@@ -141,36 +152,71 @@ public class MailServer implements Runnable{
 		    if (folder == null)
 		    {
 		    	System.out.println("Invalid folder");
-		    	System.exit(1);
+		    	//System.exit(1);
+		    	return false;
 		    }
 	    }
 	    catch(Exception e)
 	    {
 	    	e.printStackTrace();
 	    }
-	    
-	    //checkMail();
+	    return true;
+    	
     }
+    
+   
 	void checkMail()
 	{
-		advisorEmail=new String[100];
-		index=0;
 		
-    	try{
-			input=new Scanner(new File("enable.txt"));
+		
+		int count = 0;
+		String username = null;
+		String event_type = null;
+		String event_condition = null;
+		String notification = null;
+		
+		try{
+			if(stmt.execute("select * from events where event_type = 'gmail' order by username;"))
+				rs = stmt.getResultSet();
 			
-			while(input.hasNext())
+			
+			while(rs.next())
 			{
-				advisorEmail[index]=input.next();
-				index++;
+				
+				username = rs.getString(1);
+				event_type = rs.getString(2);
+				event_condition = rs.getString(3);
+				notification = rs.getString(4);
+				
+				//System.out.println("result: "+rs.getString(1) + " "+rs.getString(2) + " "+rs.getString(3) + " "+rs.getString(4));
+				
+				clientName = username;
+				notificationType = notification;
+				
+				eventConditionParser.parseCondition(event_condition);					
+				user = eventConditionParser.userID;
+				password  = eventConditionParser.password;
+				
+				//System.out.println(eventConditionParser.senderHas[0] + " " + eventConditionParser.subjectHasNot[0] + " " + eventConditionParser.bodyHasNot[0]);
+	
+				count++;
+	
+				if(initSessions() == false)
+					continue;
+				
+				
+				checkMailStatus();
 			}
+			System.out.print("count: "+count); //getRow()
 		}
 		catch(Exception e)
 		{
-			
+			e.printStackTrace();
 		}
-		advisorEmailLength=index;
-		
+
+	}
+	void checkMailStatus()
+	{		
 		
 		try{
 		   int totalMessages = 0;
@@ -226,29 +272,25 @@ public class MailServer implements Runnable{
 			    System.out.println(mailContent);
 			    System.out.println("=======================================\n");
 			   
-			    System.out.println("Advisor email length:" + advisorEmailLength);
-			    
-			    for(int j = 0; j < advisorEmailLength; j ++)
-			    {
-			    	if (mailFrom.contains(advisorEmail[j]) && alreadyNotifiedList!= null && !alreadyNotifiedList.contains(mailFrom+mailSubject+mailSendDate)){
-			    		
-			    		alreadyNotifiedList = alreadyNotifiedList + mailFrom + mailSubject + mailSendDate;
-			    		
+			    if(eventConditionParser.senderOK(mailFrom) && eventConditionParser.subjectOK(mailSubject) && eventConditionParser.bodyOK(mailContent)) //&& alreadyNotifiedList!= null && !alreadyNotifiedList.contains(mailFrom+mailSubject+mailSendDate)
+			    {		
 			    		System.out.println("********NOTIFY NOW !!!!******************");
-
+			    		
 					    totalMsg="";
-					    totalMsg+="FROM: " + mailFrom+"."+"\n";
-					    totalMsg+="SUBJECT: " + mailSubject+ "." + "\n";
-					    totalMsg+="DATE: " + mailSendDate + "." + "\n";
-					    totalMsg+="BODY: \n" + mailContent+"\n";
-
+					    totalMsg+="<clientName," + clientName +">";
+					    totalMsg+="<from," + mailFrom+">";
+					    totalMsg+="<subject," + mailSubject+ ">";
+					    totalMsg+="<date," + mailSendDate + ">";
+					    totalMsg+="<body," + mailContent+">";
+					    totalMsg+="<notificationType," + notificationType+">";
 					    
-			    	}
-			    }
-			    
-			    
-			    
-			}
+						sm.sendData(totalMsg.length()+"");
+						sm.sendData(totalMsg);				
+						
+						System.out.println(totalMsg);
+
+				 }
+				}
 		    } else {
 			System.out.println("Getting message number: " + msgnum);
 			Message m = null;
@@ -257,11 +299,13 @@ public class MailServer implements Runnable{
 			    m = folder.getMessage(msgnum);
 			    dumpPart(m);
 			    
-			    System.out.println("FROM: " + mailFrom);
-			    System.out.println("SUBJECT:" + mailSubject);
-			    System.out.println("DATE:" + mailSendDate);
-			    System.out.println("FLAGS: " + mailFlags);
-			    System.out.println("BODY: " + mailContent);
+			    //uncomment these to see the messages....
+			    
+			    //System.out.println("FROM: " + mailFrom);
+			    //System.out.println("SUBJECT:" + mailSubject);
+			    //System.out.println("DATE:" + mailSendDate);
+			    //System.out.println("FLAGS: " + mailFlags);
+			    //System.out.println("BODY: " + mailContent);
 			    		    		
 			} catch (IndexOutOfBoundsException iex) {
 			    System.out.println("Message number out of range");
@@ -493,8 +537,8 @@ public class MailServer implements Runnable{
 	     * Print a, possibly indented, string.
 	     */
 	    public static void pr(String s) {
-		if (showStructure)
-		    System.out.print(indentStr.substring(0, level * 2));
+		//if (showStructure)
+		    //System.out.print(indentStr.substring(0, level * 2));
 		//System.out.println(s);
     }
 
@@ -508,18 +552,21 @@ class EventConditionParser
 {
 	public String userID;
 	public String password;
-	public String[] messageHas = new String[10];
-	public String[] messageHasNot = new String[10];
-	public String[] statusHas = new String[10];
-	public String[] statusHasNot = new String[10];
-	int messageHasIndex, messageHasNotIndex, statusHasIndex, statusHasNotIndex;
+	public String[] senderHas = new String[10];
+	public String[] senderHasNot = new String[10];
+	public String[] subjectHas = new String[10];
+	public String[] subjectHasNot = new String[10];
+	public String[] bodyHas = new String[10];
+	public String[] bodyHasNot = new String[10];
+	
+	int senderHasIndex, senderHasNotIndex, subjectHasIndex, subjectHasNotIndex, bodyHasIndex, bodyHasNotIndex;
 	
 	
 	void parseCondition(String condition)
 	{
 		//System.out.println(condition);
 		StringTokenizer st = new StringTokenizer(condition,">");
-		String temp,temp1, temp2,temp3="";
+		String temp,temp1, temp2,temp3="",temp5;
 		String definedString;
 		
 		definedString = "userid";
@@ -540,22 +587,27 @@ class EventConditionParser
 		//System.out.println("type: " + temp1 + ",value: " + temp2);
 		this.password = temp2;
 	 	
-		messageHasIndex = 0;
-        messageHasNotIndex = 0;
-        statusHasIndex = 0;
-        statusHasNotIndex = 0;
+		senderHasIndex = 0;
+        senderHasNotIndex = 0;
+        subjectHasIndex = 0;
+        subjectHasNotIndex = 0;
+        bodyHasIndex = 0;
+        bodyHasNotIndex = 0;
 		
 		
 		while (st.hasMoreTokens()) {
 			
-			String ds1 = "message";
-			String ds2 = "status";
+			String ds1 = "sender";
+			String ds2 = "subject";
+			String ds5 = "body";
 			String ds3 = "has";
 			String ds4 = "hasnot";
 			
 	        temp = st.nextToken();
 	        temp1 = temp.substring(1,ds1.length()+1);	        
-	        temp2 = temp.substring(1,ds2.length()+1);	        
+	        temp2 = temp.substring(1,ds2.length()+1);	 
+	        temp5 = temp.substring(1,ds5.length()+1);
+	        
 	        
 	       
 	        if(temp1.compareTo(ds1) == 0)
@@ -567,13 +619,13 @@ class EventConditionParser
 		         if(temp2.compareTo(ds4)==0)
 		         {
 		        	temp3 = temp.substring(len + 1 + ds4.length()+1,temp.length());
-		        	messageHasNot[messageHasNotIndex++] = temp3.toLowerCase(); 
+		        	senderHasNot[senderHasNotIndex++] = temp3.toLowerCase(); 
 		        	
 		         }
 		         else if(temp1.compareTo(ds3)==0)
 			      {
 			        	temp3 = temp.substring(len + 1 + ds3.length()+1,temp.length());
-			        	messageHas[messageHasIndex++] = temp3.toLowerCase(); 		        				     
+			        	senderHas[senderHasIndex++] = temp3.toLowerCase(); 		        				     
 			      }
 			      else
 		        	System.out.println("invalid condition: has/hasnot problem");
@@ -588,20 +640,42 @@ class EventConditionParser
 		         if(temp2.compareTo(ds4)==0)
 		         {
 		        	temp3 = temp.substring(len + 1 + ds4.length()+1,temp.length());
-		        	statusHasNot[statusHasNotIndex++] = temp3.toLowerCase(); 
+		        	subjectHasNot[subjectHasNotIndex++] = temp3.toLowerCase(); 
 		        	
 		         }
 		         else if(temp1.compareTo(ds3)==0)
 			      {
 			        	temp3 = temp.substring(len + 1 + ds3.length()+1,temp.length());
-			        	statusHas[statusHasIndex++] = temp3.toLowerCase(); 		        				     
+			        	subjectHas[subjectHasIndex++] = temp3.toLowerCase(); 		        				     
 			      }
 			      else
 		        	System.out.println("invalid condition: has/hasnot problem");
 		        
 	        }
+	        else if(temp5.compareTo(ds5) == 0)
+	        {
+	        	int len = ds5.length() + 1;
+	        	temp1 = temp.substring(len + 1,len + 1 + ds3.length());	        
+		        temp2 = temp.substring(len + 1,len + 1 + ds4.length());	       
+	        	
+		         if(temp2.compareTo(ds4)==0)
+		         {
+		        	temp3 = temp.substring(len + 1 + ds4.length()+1,temp.length());
+		        	bodyHasNot[bodyHasNotIndex++] = temp3.toLowerCase(); 
+		        	
+		         }
+		         else if(temp1.compareTo(ds3)==0)
+			      {
+			        	temp3 = temp.substring(len + 1 + ds3.length()+1,temp.length());
+			        	bodyHas[bodyHasIndex++] = temp3.toLowerCase(); 		        				     
+			      }
+			      else
+		        	System.out.println("invalid condition: has/hasnot problem");
+	        	
+	        }
 	        else
-	        	System.out.println("Invalid condition. Expected: " + ds1 +"/" + ds2 +", Received: " + temp1 );
+	        	System.out.println("Invalid condition. Expected: " + ds1 +"/" + ds2 + "/" + ds3 + ", Received: " + temp1 );
+	        	
 	        
 	         
 	     }
@@ -609,43 +683,50 @@ class EventConditionParser
 		
 	}
 
-	boolean satisfiesCodition(String event, int type)	//type = 0 ->status, type = 1 -> message
+	boolean senderOK(String event)	//type = 0 ->status, type = 1 -> message
 	{	
 		event = event.toLowerCase();
-		
-		if( type == 0 && statusHasIndex == 0 && statusHasNotIndex == 0)
-			return false;
-		if( type == 1 && messageHasIndex == 0 && messageHasNotIndex == 0)
-			return false;
-		
-		
-		if( type == 0)
+		for(int i = 0; i < senderHasIndex; i++)
 		{
-			for(int i = 0; i < statusHasIndex; i++)
-			{
-				if(event.lastIndexOf(statusHas[i]) == -1 )
-					return false;
-			}
-			for(int i = 0; i < statusHasNotIndex; i++)
-			{
-				if(event.lastIndexOf(statusHasNot[i]) != -1 )
-					return false;
-				
-			}
+			if(event.lastIndexOf(senderHas[i]) == -1 )
+				return false;
 		}
-		else if(type == 1)
+		for(int i = 0; i < senderHasNotIndex; i++)
 		{
-			for(int i = 0; i < messageHasIndex; i++)
-			{
-				if(event.lastIndexOf(messageHas[i]) == -1 )
-					return false;
-			}
-			for(int i = 0; i < messageHasNotIndex; i++)
-			{
-				if(event.lastIndexOf(messageHasNot[i]) != -1 )
-					return false;				
-			}
-			
+			if(event.lastIndexOf(senderHasNot[i]) != -1 )
+				return false;				
+		}
+		return true;
+	}
+	
+	boolean subjectOK(String event)
+	{
+		event = event.toLowerCase();
+		for(int i = 0; i < subjectHasIndex; i++)
+		{
+			if(event.lastIndexOf(subjectHas[i]) == -1 )
+				return false;
+		}
+		for(int i = 0; i < subjectHasNotIndex; i++)
+		{
+			if(event.lastIndexOf(subjectHasNot[i]) != -1 )
+				return false;
+		}
+		
+		return true;
+	}
+	boolean bodyOK(String event)
+	{
+		event = event.toLowerCase();
+		for(int i = 0; i < bodyHasIndex; i++)
+		{
+			if(event.lastIndexOf(bodyHas[i]) == -1 )
+				return false;
+		}
+		for(int i = 0; i < bodyHasNotIndex; i++)
+		{
+			if(event.lastIndexOf(bodyHasNot[i]) != -1 )
+				return false;
 		}
 		
 		return true;

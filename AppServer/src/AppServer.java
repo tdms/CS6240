@@ -10,10 +10,9 @@ public class AppServer {
 		System.out.println("hello world");
 		//Runtime.getRuntime().gc();
 		
-		new SocketManager().listenSocket();
+		SMSSender smsSender = new SMSSender();
+		new SocketManager().listenSocket(smsSender);
 		
-		
-
 	}
 
 }

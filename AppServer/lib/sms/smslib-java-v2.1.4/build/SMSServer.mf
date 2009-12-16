@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Implementation-Title: SMSServer for Java
+Implementation-Version: @version@
+Main-Class: smsserver.SMSServer
+Created-By: Thanasis Delenikas

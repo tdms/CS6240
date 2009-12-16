@@ -2,5 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="E:/Downloads/mysql-connector-java-5.1.10-bin.jar"/>
+	<classpathentry kind="lib" path="D:/UVA/sw_engg/JUnit/AppServer/src/comm.jar"/>
+	<classpathentry kind="lib" path="D:/UVA/sw_engg/JUnit/AppServer/lib/sms/smslib-java-v2.1.4/dist/lib/smslib-2.1.4.jar"/>
+	<classpathentry kind="lib" path="D:/UVA/sw_engg/JUnit/AppServer/lib/sms/apache-ant-1.7.1/lib/ant-apache-log4j.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,0 +1,335 @@
+<html>
+<body>
+	<center><h2>Release Notes<br/>SMSLib for Java</h2></center>
+	<h3>Revision History.</h3>
+	<b>Version 2.1.4 - [May 28, 2007]</b>
+	<ul>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: Bug in CGSMAlphabet.java, affects some operating systems other that Windows. Identified by <strong>Teo Hong Siang</strong>.</li>
+	</ul>
+	<b>Version 2.1.3 - [May 10, 2007]</b>
+	<ul>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added support for generic href:// references in Wap SI messages. Contributed by <strong>Zheng Yue</strong>.</li> 
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added the method CService.SetStorageLocations() which you can call in order to define your own storage locations without altering the main SMSLib code. Normally, SMSLib tries to read the available storage locations from the modem, but sometimes this is not possible. Use this method with care!</li>
+		<li><b>SMSLib API</b> [<font color="#0000ff">Other</font>]: Removed all annotations for source <strong>compatibility</strong> with <strong>JDK 1.4</strong><br></li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added a "CFUN=1,1" command for SonyEricssons. Contributed by <strong>Lucas Izbaner</strong>.</li>
+		<li><b>SMSServer</b> [<font color="#00aa00">Enhancement</font>]: Modifications of the SMSServer.CDatabase.isOpen() method. Contributed by <strong>Lucas Izbaner</strong>.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added AT handler for Siemens S55. Contributed by <strong>Joel Chavoya</strong>.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added AT handler for Sony Ericsson W550i. Contributed by <strong>Polyak Tamas</strong>.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added AT handler for Siemens M55. Contributed by <strong>ru_alex@SF</strong>.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added AT handler for Sony Ericsson GT48. Contributed by <strong>Gang Liang</strong>. <strong>**WARNING**</strong> This modem does not return reference numbers upon sending messages. SMSLib returns a standard RefNo of 1 for this modem. As a result of these, delivery reports will never match sent messages.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added forced storage location "SMSR" for Wavecom modems. Some models do not seem to return the "SR" location by themselves.</li>
+		<li><b>SMSServer</b> [<font color="#ff0000">Bug</font>]: SMSServer tried to open the database even when the database was disabled from the config file.</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: Workaround for bug <a href="http://sourceforge.net/tracker/index.php?func=detail&aid=1680993&group_id=164313&atid=831227">1680993</a>. This is a <strong>temporary fix</strong>: when the error condition is detected, SMSLib automatically appends a space character (ASC 32) to your text message.</li>
+	</ul>
+	<b>Version 2.1.2 [Feb 24, 2007]</b>
+	<ul>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: A bug was fixed which was caused by a modification in v2.1.1 which caused with certain modems. The problem is that SMSLib does not correctly recognize the response of certain modems when the SIM PIN is already entered.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: In CService.connect(), when a no-PDU or no-TEXT exception was thrown, SMSLib forgot to close the serial port. Contributed by <strong>David Tam</strong>.</li>
+		<li><b>SMSServer</b> [<font color="#00aa00">Enhancement</font>]: Added the option <strong>phone.protocol</strong> in SMSServer's config file which denotes whether SMSLib should work in PDU or TEXT mode. Contributed by <strong>David Tam</strong>.</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: Bug in the way the Network Registration response was handled - if the GSM modem is not in auto-registration mode, SMSLib looped. Identified by <strong>Simon Bretin</strong>.</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: Bug in COutgoingMessage.toString(), throwed Null Pointer Exception. Identified by <strong>Kuba Duda</strong>.</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: Alteration of CService.connect() method to avoid leaving the port open when exception occurs during initialization. Identified by <strong>Kuba Duda</strong>.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added method <strong>CIncomingMessage.getPduUserData</strong> to retrieve the raw PDU data from a message.</strong>.</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Critical</font>]: Bug in the way multipart messages were sent. Major redesign of CMessage/COutgoingMessage/CWapSiMessage classes.</li>
+	</ul>
+	<b>Version 2.1.1 [Feb 01, 2007]</b>
+	<ul>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: The log4j configuration can be set through an XML file as well. If a file named <strong>smslib-log.conf.xml</strong> is found, then it is supposed to be a log4j xml configuration file and SMSLib setup its logging according to this. A sample XML config file is also included in the distribution package. Enhancement proposed by <strong>dbettoni@SF</strong>.</li> 
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Changed the RegEx for handling the CPIN response. Enhancement proposed by <strong>dbettoni@SF</strong>.</li> 
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: You are now allowed to use custom Protocol ID and DCS (Data Coding Scheme) values for outgoing messages. Methods <strong>getPid()</strong>, <strong>setPid()</strong>, <strong>getDcs()</strong> and <strong>setDcs()</strong> have been added to the <strong>COutgoingMessage</strong> class. If you use SMSLib for standard text messages, you don't need to call any of these, as the default values will suit you.  Enhancement proposed by <strong>vityusha@SF</strong>.</li> 
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Differentiated SonyEricsson response for AT+CMGF, contributed by <strong>Sastra Winarta</strong>.</li> 
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Removed "System.exit(1)" call from OopsException.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added some extra logger calls to log CMTI responses when SMSLib is running in ASYNC mode. Enhancement proposed by <strong>dbettoni@SF</strong>.</li> 
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: The _SYNC_ synchronization object is not longer a static one. Enhancement proposed by <strong>dbettoni@SF</strong>.</li> 
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: The setReceiveMode() was not synchronized. Identified by <strong>dbettoni@SF</strong>.</li> 
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: In CSerialDriver.java, method getResponse(), the exception which is thrown if no response is read seems reduntant and would not allow the ATHandlers to work as expected in case of errors. This line is now commented out. Identified by <strong>aberesfo@SF</strong>.</li> 
+		<li><b>SMSLib API</b> [<font color="#0000FF">Other</font>]: Added some constants in <strong>CSerialDriver.java</strong> and <strong>CATHandler.java</strong> (and descendants) to substitute the "magic" numbers found in all Thread.sleep() calls. I have increased the delays a bit for compatibility purposes.</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: In CService.connect() / catch statement, the possible exception thrown by disconnect() was not caught, so an incorrect exception was reported back. Identified by <strong>dbettoni@SF</strong>.</li> 
+		<li><b>CommTest Utility</b> [<font color="#ff0000">Bug</font>]: The baudrate was not set during initial probing of the port, so CommTest was not working right. Identified by <strong>popi mushalihin@SF</strong>.</li> 
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added the <strong>smslib.debug</strong> property. If this is set (actual value does not matter) the log4j logger will be set to full logging level.</li> 
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Removed all exception catching from the CService.disconnect() method. Enhancement proposed by <strong>heretique@SF</strong>.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added the parsing of +CDSI indication. <strong>dbettoni@SF</strong>.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Review of CService.disconect() in order to wait correct termination of ReceiveThread and KeepAliveThread. <strong>dbettoni@SF</strong>.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added functionality to keep track of incoming calls. A new listener is introduced: <strong>ICallListener</strong>. This will be called whenever SMSLib detects an incoming call (the incoming call itself is automatically terminated). See the <strong>ReadMessagesAsync</strong> example for implementation details. Incoming call detection works in all operation modes. Enhancement proposed by <strong>charlesO@SF</strong>.</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: Wrong RegEx in CService.getGprsStatus().</li> 
+		<li><b>SMSServer</b> [<font color="#ff0000">Bug</font>]: Bug in the replacement of "'" characters before insertion in the database caused SMSServer to stall.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Modifications in build.xml, introduced a properties file for storing external jars locations. Enhancement proposed by <strong>dbettoni@SF</strong>.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added code to detect an incoming call. A callback function (if defined) will be called with the number who's calling you. See <strong>ReadMessagesAsync.java</strong> example for implementation details.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Speed optimizations in the way SMSLib handles the responses read from the modem. Enhancement proposed by <strong>javazoid@SF</strong>.</li>
+	</ul> 
+	<b>Version 2.1.0 [Nov 25, 2006]</b>
+	<ul>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: SMSLib was not handling properly messages which are both big/multipart and carry port information.</li>
+		<li><b>SMSLib API / SMSServer</b> [<font color="#ff0000">Compabitility</font>]: Code was modified in order to be able to be compile under JDK 1.4.2 - watch out for compilation errors!</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: Text in a WAP PUSH message was not UTF-8 encoded.</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Compabitility</font>]: The CWapSIMessage constructor may throw an exception.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Read the available storage locations directly from the phone instead of guessing.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Removed Nokia 6822 custom AT handler, since storage location are now read from the phone.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Check in CMessage.getDate() for null dates.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added some code to skip some extra whitespace in modem response.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added a (limit) parameter in readMessages() so that up to (limit) messages can be read. The (limit) does not work well if you have multipart messages waiting to be read.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: CStatusReportMessage: Added the DeliveryStatus flags and the status field. This field holds the status of the delivery report. This status was previously kept in the text of the status report. Use getDeliveryStatus() call to retrieve the delivery status of the status report message. <strong>The previous method of adding the delivery status in the text continues to be here, but you are kindly advised to switch to the new methodology, as the former method will eventually be removed.</strong></li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: CService.disconnect() can throw exceptions - enhancement proposed by Fredrik Askerblom.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: <strong>Support for TEXT protocol</strong>. Default protocol is always PDU. You can switch to TEXT, by calling the CService.setProtocol() method before connecting. When in TEXT protocol, SMSLib is working in HEX/GSM7 mode alphabet.</li>
+	</ul>
+	<b>Version 2.0.2 [Oct 19, 2006]</b>
+	<ul>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Critical</font>]: Bug in reading multipart messages, when some message parts are missing. Bug introduced by previous bug-fixing code.</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Critical</font>]: Bug in WAP PUSH SI management code which made it impossible to send a WAP SI message.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: The date field in CMessage is set to the current date if no date is passed.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Created a Nokia 6822 AT handler without the ME storage specifier.</li>
+	</ul>
+	<b>Version 2.0.1 [Oct 13, 2006] (plus changes from the B1 release.)</b>
+	<ul>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Critical/Compatibility</font>]: *** Code refactoring *** The issues below affect old applications which used SMSLib < v2. Please, check carefully.</li>
+			<ul>
+				<li>Message Type, Message Class and Encoding constants moved to enumerations.</li>
+				<li>Interfaces removed from CMessage and descendants</li>
+				<li>Revisited CMessage class' (and descendants) member access and visibility.</li>
+				<li>Removed Phonebook classes.</li>
+			</ul>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: Bugs in incoming message header decoding. Thanks to Pedroint for the correction.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Various improvements and type checks in core SMSLib code.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Switched to ant building. Makefiles are removed.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Switched to Apache Log4J for logging. You should download and install Apache Log4J in order to use SMSLib.</li>
+		<li><b>SMSLib API / SMSServer</b> [<font color="#ff00ff">Compabitility</font>]: The calls to setStorageSIM() and setStorageMEM() have been removed. This also affects SMSServer configuration files - the directives for storage have been removed. The calls are no longer needed as SMSLib iterates in all defined memories when reading messages.</li>
+		<li><b>SMSLib API</b> [<font color="#ff00ff">Compabitility</font>]: Interface CSmsMessageListener is renamed to ISmsMessageListener.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Initialization sequence changed.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Javadoc documentation pages (not completed yet).</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Modified the Network Registration handling function (waitForNetworkRegistration()) to overcome incorrect responses.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Implementation of a 8-bit encoded WAP PUSH (SI) outgoing message.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added a small (1 sec) delay before clearBuffer().</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added method that allows you to either set a ready-made log4j logger object or to disable logging alltogether (by setting a null logger). <b>My recommendation</b> is to not disable logging, unless you really understand what this action will bring: complete loss of all possible errors' reporting. Look at method CService.setLogger() for more information.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Changed the timing/delays in CATHandler.sync() method.</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Critical</font>]: Bug in reading multipart messages: When part #1 of a multi-part is saved in the lowest memory location and part #2 has never arrived, SMSLib was not processing the rest of the messages. (See <a href="http://sourceforge.net/tracker/index.php?func=detail&aid=1575183&group_id=164313&atid=831227">here</a>.)</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Critical</font>]: Bug in reading multipart messages: When message parts arrive out of order, SMSLib cannot read them correctly. (See <a href="http://sourceforge.net/tracker/index.php?func=detail&aid=1575183&group_id=164313&atid=831227">here</a>.)</li>
+	</ul>
+	<b>Version 1.3.3 - [Dev]</b>
+	<ul>
+		<li><b>SMSServer</b> [<font color="#ff0000">Bug</font>]: Database handling routines are modified to handle quotation marks. Thanks to Pedroint for the correction.</li>
+	</ul>
+	<b>Version 1.3.2 - [August 22, 2006]</b>
+	<ul>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Critical</font>]: Critical bug in handling large incoming messages in UCS2 (Unicode) & 8bit encodings. Messages were not recognized correctly and stayed in inbox for ever.</li>
+	</ul>
+	<b>Version 1.3.1 - [August 08, 2006]</b>
+	<ul>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: Bug in reading status reports' status field. Thanks to Crapufish for this correction.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Changed the sequence of initialization and added small delay in AT Handler's sync() method for improved compatibility. Thanks to RGomez and Darkstorm for their feedback and improvements..</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Critical</font>]: Changes in Wavecom handler to support STATUS-REPORT messages - also remarked the reset code.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Removed the CPMS memory selector from Siemens handler - not required any more.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Better handling of unhandled SMS messages found in the inbox. If, for some reason, SMSLib cannot parse a specific message, it displays an error and skips it.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added day/time in the log lines.</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: Synchronization issues in methods sendMessage(), disconnect().</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added call to emptyBuffer() as a first action after connecting to clear any buffer garbage.</li>
+		<li><b>SMSLib API</b> [<font color="#0000FF">Experimental</font>]: Added a custom handler for Wavecom, model M1306B. Differences with standard Wavecom AT handler: It has the reset functionality enabled and will automatically reset the modem upon CMS errors during dispatch.</li>
+		<li>[<font color="#0000FF">Other</font>] Changes in 'build.xml' by Federico.</li>
+		<li>[<font color="#0000FF">Other</font>] Added SerialVersionUIDs to serializable objects to keep the compiler from complaining.</li>
+	</ul>
+	<b>Version 1.3 - [June 21, 2006]</b>
+	<ul>
+		<li><b>SMSServer</b> [<font color="#00aa00">Enhancement</font>]: Added some new fields in the <b>sms_in</b> table. Field <b>type</b> is either "I" for incoming message or "S" for status report messages. Fields <b>ref_no</b>, <b>original_sent_date</b> and <b>date_received</b> get values only for status report messages. Thanks to Joao Lopes for his comments on this!</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Critical</font>]: It seems that the syncronization in the core SMSLib threads was wrong... The Keep-Alive thread was called during other calls. This lead to great instability and NoResponse exception errors. Now things are synchronized the correct way. I assume that this correction will solve many unexplained problems appearing during the operation of SMSLib.</li>
+		<li><b>Other</b> [<font color="#0000FF">Other</font>]: The distribution package included the compiled classes & jars.</li>
+		<li><b>CommTest</b> [<font color="#0000FF">Other</font>]: Since many people have trouble locating the comm port to which their phone/modem is connected, I have created new application, named CommTest under "misc" directory. This test app will enumerate all available ports and will try to connect and get the Modem Model info. Run <b>java misc.CommTest</b> from SMSLib main directory. The CommTest app may take several seconds to complete. The CommTest will try to connect at 19200, 38400 and 115200 baud rates - if you wish to connect at other speeds, you must modify the source and recompile. I believe these are somehow standard baud rates and your modem should be detected. Don't expect solid design on this: you may see strange system errors and other stuff. Consider it just a tool that may help you identify your port. :) </li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: CService class has some new members: <b>setRetriesNoResponse(), getRetriesNoResponse(), setDelayNoResponse(), getDelayNoResponse(), setRetriesCmsErrors(), getRetriesCmsErrors(), setDelayCmsErrors(), getDelayCmsErrors()</b>. These may be used to set the behavior of SMSLib during sending errors. These calls affect the values that where previously defined as static variables in CHandler class. All calls that have to do with delay take seconds as their parameter.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Modified the error message for sendMessage() so that it displays the actual CMS ERROR without having to enable the log.</li>
+		<li><b>SMSLib API</b> [<font color="#0000FF">Refactoring</font>]: Modified some methods that used to accept CIncomingMessage to accept IIncomingMessage classes.</li>
+		<li><b>SMSServer</b> [<font color="#00aa00">Enhancement</font>]: Introduced property option <b>smsserver.configdir</b>. If used, it should point to a directory (final "/" IS required) where the configuration file is located. If not used, the configuration file is supposed to be in the current directory. So, if you run SMSServer like <b>java -Dsmsserver.configdir=c:/ SMSServer.SMSServer</b>, SMSServer will try to load its configuration file from the root C: directory.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Modified the CNMI commands for Wavecom handler, to allow storage of status report messages in "SR" location.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: SMSLib now reads from all valid memory storage locations. Valid storage locations are defined in AbstractATHandler class, variable <b>memoryLocations</b>. If a memory location is not supported by your hardware, SMSLib skips it. <b><i>So, generally, you would not want to modify this variable!</i></b></li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Due to the above, the CMessage class has been modified to hold the Memory Location as well as the Memory Index of a message. Also, now the &quot;key&quot; of a message (as far as the hardware is concerned) is not its Memory Index alone but the Memory Index &amp; Memory Location together. The deleteMessage() functionality is also modified to care for this double key information - to delete a message, it first switches to the message's memory location and then it deletes the message's memory index.</li>
+		<li><b>SMSLib API</b> [<font color="#0000FF">Other</font>]: Removed Siemens AT Handler.</li>
+		<li><b>SMSLib API</b> [<font color="#0000FF">Other</font>]: Removed BenQ AT Handler.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added support for sending/receiving large 8bit encoded messages. Sending uses 16bit referencing mode. So, now SMSLib can receive 7bit/8bit/UCS2 encoded large messages in 8bit or 16bit referencing mode and can send 7bit/8bit/UCS2 encoded large messages in 16bit referencing mode. <b>Please note that the combination of a large message together with port information does not work at the moment.</b></li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added method <b>catchAsyncException(Exception)</b>. This is called from the async thread whenever an exception occurs. You may overload this method in order to catch/process these exceptions.</li>
+		<li><b>SMSServer</b> [<font color="#0000FF">Refactoring</font>]: Added package to SMSServer class files.</li>
+		<li><b>Examples</b> [<font color="#0000FF">Refactoring</font>]: Added package to examples class files.</li>
+		<li><b>SMSLib API</b> [<font color="#0000FF">Refactoring</font>]: Added interface[s] IMessage, IOutgoingMessage, IIncomingMessage and abstract class AbstractATHandler.</li>
+		<li><b>SMSLib API</b> [<font color="#0000FF">Refactoring</font>]: Starting using interfaces: changed reference to LinkedList to List, references to CMessage into IMessage, references to COutgoingMessage into IOutgoingMessage, references to CIncomingMessage into IIncomingMessage and references to CATHandler into AbstractATHandler.</li>
+		<li><b>SMSLib API</b> [<font color="#0000FF">Refactoring</font>]: Moved constants to interfaces/abstract classes.</li>
+		<li><b>SMSLib API</b> [<font color="#0000FF">Refactoring</font>]: Changed inner class declarations into static inner classes.</li>
+		<li><b>SMSLib API</b> [<font color="#0000FF">Refactoring</font>]: Handler classes moved to a subpackage.</li>
+		<li><b>SMSLib API</b> [<font color="#0000FF">Refactoring</font>]: Changed CLogger to public.</li>
+		<li><b>SMSLib API</b> [<font color="#0000FF">Refactoring</font>]: Changed COutgoingMessage.isBig() to public.</li>
+		<li><b>SMSLib API</b> [<font color="#0000FF">Refactoring</font>]: Changed COutgoingMessage.getNoOfParts() to public.</li>
+		<li><b>SMSLib API</b> [<font color="#0000FF">Refactoring</font>]: Changed COutgoingMessage.getPDU() to public.</li>
+		<li><b>SMSLib API</b> [<font color="#0000FF">Refactoring</font>]: Changed LinkedList.addLast() to List.add().</li>
+		<li>[<font color="#0000FF">Other</font>] Changes in makefile for Win32 & Linux/Unix.</li>
+		<li>[<font color="#0000FF">Other</font>] Added 'build.xml' for Ant building.</li>
+	</ul>
+	<b>Version 1.2.2 - [May 12, 2006]</b>
+	<ul>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: Replaced calls to <b>clearBuffer()</b> with <b>getResponse()</b> in ATHandlers, to solve some desync issues reported.</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: Bug in SMSC number / header calculation. Bug seemed to appear only in countries where the subs' number consist of an odd number of digits. Bug correction by Xiafan.</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: Bug in AT+CPIN response handling. Some gsm modems return READY without a terminated OK which caused misbehaviour. Bug correction by Willow.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: SMSLib now compiles under JDK 1.4.2.</li>
+		<li><b>SMSServer</b> [<font color="#00aa00">Enhancement</font>]: SMSServer now compiles under JDK 1.4.2.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added GPRS query to check GPRS status.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added method CService.sendCustomCmd(String) which may be used for sending custom AT commands to the GSM modem.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added method CService.deleteMessages(CLASS) which deletes <b>all</b> messages of the specified message class.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: SMSLib will now wait for network registration completion before being available for operations. The check for GSM Network Registration is made upon connection (CService.connect()).</li>
+		<li><b>SMSLib API</b> [<font color="#0000FF">Other</font>]: The default SMSC Number in CService is now "" instead of null.</li>
+		<li><b>SMSLib API</b> [<font color="#0000FF">Other</font>]: Modified all methods in AT handlers to be protected.</li>
+		<li><b>SMSLib API</b> [<font color="#0000FF">Other</font>]: Added overriden empty reset() methods to all AT handlers except Wavecom's, in order to avoid errors.</li>
+		<li><b>SMSLib API</b> [<font color="#0000FF">Other</font>] <b>Removed</b> Nokia handler. Nokia is handled well with the default handler.</li>
+		<li>[<font color="#0000FF">Other</font>] Minor changes in makefiles for JDK 1.4.2 support.</li>
+	</ul>
+	<b>Version 1.2.1 - [May 02, 2006]</b>
+	<ul>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Critical</font>]: Bug in COutgoingMessage.isBig() method, which made wrong decision on whether a Unicode (UCS2) messages is to be considered large or not.</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Bug</font>]: Messages could not be deleted from memory index 0.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: AT Handler for Siemens TC35, contributed by Childe Zhao and Oswaldo.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: AT Handler for BenQ, contributed by Tony Yip &amp; Baakmin.</li>
+		<li>[<font color="#0000FF">Other</font>] Minor changes in makefile for Linux/Unix.</li>
+	</ul>
+	<b>Version 1.2 - [April 25, 2006]</b>
+	<ul>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Critical</font>]: Fixed bug appearing when modem's inbox had more that one large messages (only one of them was processed).</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added support for sending/receiving large Unicode messages. Sending uses 16bit referencing mode. With this enhancement, <b>SMSLib now fully supports sending and receiving large, 7bit-encoded or Unicode (UCS2) messages</b>.</li>
+	</ul>
+	<b>Version 1.1 - April 21, 2006</b>
+	<ul>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added support for reception of 7bit-encoded large messages, either in 8bit referencing mode or in 16bit referencing mode (used to be working only in 8bit referencing mode).</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added support for sending large messages. Currently, works <b>only</b> for 7bit encoded messages. Uses 16bit referencing mode. With this enhancement, <b>SMSLib now fully supports sending and receiving large, 7bit-encoded messages</b>.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added back the calls to "flush()" method of the output stream (CSerialDriver.java).</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Added a new exception, named <b>OopsException</b> ( :) ). I will be using it for "panic" situations that SMSLib may face. If you ever get such an exception, please provide the stack trace to me!</li>
+	</ul>
+	<br/>
+	<b>Version 1.0.2 - April 20, 2006</b>
+	<ul>
+		<li><b>SMSLib API</b>: Some timing changes were made in CSerialDriver.java.</li>
+		<li><b>SMSLib API</b> [<font color="#ff0000">Critical</font>]: A bug in <b>setReceiveMode()</b> method is corrected.</li>
+		<li><b>SMSLib API</b> [<font color="#00aa00">Enhancement</font>]: Removed the calls to "flush()" method of the output stream (CSerialDriver.java). The "flush" call seemed to create trouble on virtual comm ports when RxTx is used. It seems that without the "flush()" forced call, RxTx can now be used on virtual comm ports (on Win32 installations) without throwing any exceptions.</li>
+	</ul>
+	<br/>
+	<b>Version 1.0.1 - April 13, 2006</b>
+	<ul>
+		<li>Added SMSServer application. SMSServer application is the port of the older jSMSServer.</li>
+	</ul>
+	<br/>
+	<b>Version 1.0 - First Public Release.</b>
+	<br/><br/><br/>
+	<font size = "-2" color="blue">
+		For your convenience, here are the release notes of the latest jSMSEngine API. SMSLib project is based on jSMSEngine API.<br/><br/>
+		<b>Version 2.1.0 (Compiled packages with JDK 1.5.x)</b>
+		<ul>
+			<li><b>jSMSEngine API</b>: Java Documentation remarks have been removed from the code. I am preparing a new set of them. For the moment, consult the examples which have been enriched with extra comments.</li>
+			<li><b>jSMSEngine API</b>: Thanks to Martin Sulak, jSMSEngine API can now handle CMTI indications. This has some implications:
+				<ul>
+					<li>The first and greatest thing is that the GSM device does not need to support the disabling of new message indications in order to work with jSMSEngine API. In fact, the disableIndications() is not called at all at modem initialization. Plus, the CannotDisableIndications exception does not exist any more. The methods to enable or disable indications are called when switching to new receive mode (Synchronous, Synchronous Poll, Synchronous CNMI) but even if they fail nothing bad happens. There are a couple of warning messages that get displayed in order to inform you, but the application will continue to work.</li>
+					<li>Asynchronous message reading has now two forms: a POLLing one and a CNMI-aware one. The POLL method works like it used to. The CNMI method is actually a POLL method which is called not only when the time interval lapses but also when a message arrives. This is done by intercepting the CMTI modem responses and activating the callback function, just like when the POLL time lapses. Look at the ReadMessagesAsyncXXX examples for more info.</li>
+				</ul>
+			<li><b>jSMSEngine API</b>: Minor changes in regexp strings for getManufacturer(), getModel(), etc. to better handle incompatible responses.</li>
+			<li><b>jSMSEngine API</b>: Added small delay after "+++" command.</li>
+			<li><b>jSMSEngine API</b>: Modified CSerialBuffer.clearBuffer() which could cause infinent loops under some circumstances.</li>
+			<li><b>jSMSEngine API</b>: Added delay before retrying message sending when CMS errors appear.</li>
+			<li><b>jSMSEngine API</b>: Added code to remove extra blank lines returned by some GSM models.</li>
+			<li><b>jSMSEngine API</b>: Modified CSerialDriver class for faster parsing of responses.</li>
+			<li><b>jSMSEngine API</b>: Now using custom logger class. A new runtime property has been introduced: <b>-Djsmsengine.debug.output=path-to-file</b>. When used, all logger activity will be redirected to file "path-to-file". If not used, logger activity will be shown on stderr stream.</li>
+		</ul>
+		<br><br>
+		<b>Version 2.0.9 (Compiled packages with JDK 1.5.x)</b>
+		<ul>
+			<li><b>jSMSEngine API</b>: Code cleanup.</li>
+			<li><b>jSMSEngine API</b>: Added extra thread which calls isAlive() in regular intervals. This is done in order not to allow the physical comm connection to timeout and force a disconnection.</li>
+			<li><b>jSMSEngine API</b>: All method in AT Handlers now synced.</li>
+			<li><b>jSMSEngine API</b>: Fixed delay in disconnection.</li>
+			<li><b>jSMSEngine API</b>: Removed the reset() code (AT+CFUN) from all handlers except Wavecom. It seems it has created many problems.</li>
+			<li><b>jSMSEngine API</b>: Fixed incorrect parsing of Status Report messages (<a href="http://jsmsengine.org/forum/index.php?action=vthread&forum=4&topic=43">Bug Report</a>).</li>
+			<li><b>jSMSEngine API</b>: Added small delay after sending data to GSM device, to allow time for response.</li>
+			<li><b>jSMSEngine API</b>: Complete redesign of GSM Alphabet handling and character encoding routines. Graved and other special characters should work ok. Source code compilation should be smooth in all operating systems, with no need to remove code.</li>
+			<li><b>jSMSEngine API</b>: A new field is added in CMessage, RefNo. RefNo is the SMSC Reference Number which is returned on succesfull dispatch of a message. This value is stored in refNo field (accessed by public method CMessage.getRefNo()). Outgoing messages will set their refNo to the Reference Number returned by your SMSC. Status Report messages will set their refNo to the refNo of the original message sent. This way, a status report message can be matched with a previously dispatched message. Reference Number is not unique, as its values cycle between 1 and 255, but if you combine it with the recipient's number you will get a better "key" information to use in matching a status report message with its appropriate sent message.
+			<li><b>jSMSEngine API</b>: Bug in AT Handler decision code. This affected modem specific AT handlers.</li>
+			<li><b>jSMSEngine API</b>: Classes CMessage, CIncomingMessage, COutgoingMessage, CStatusReportMessage now implement the Serializable interface. <b>Use this feature with care! There is no guarantee that these classes will not be modified in a future release.</b></li>
+		</ul>
+		<br><br>
+		<b>Version 2.0.8 (Compiled packages with JDK 1.5.x)</b>
+		<ul>
+			<li><b>jSMSEngine API</b>: The CService code for selecting the appropriate AT handler has changed from the arcane if-then structure to a more elegant solution based on reflection. Code contributed by Alessandro A. Garbagnati.</li>
+			<li><b>jSMSServer</b>: Modified the structure of the outgoing xml file and added new tags to cater for flash sms, source and destination ports and validity period information.</li>
+			<li><b>jSMSServer</b>: New configuration option, "phone.storage" allows you to set which is the storage your phone uses (MEM or SIM).</li>
+			<li><b>jSMSServer (BUG)</b>: When jSMSServer is set to GUI operation, two CUserThread objects were instantiated (<a href="http://jsmsengine.org/forum/index.php?action=vthread&forum=3&topic=17">Bug Report</a>)</li>
+		</ul>
+		<br><br>
+		<b>Version 2.0.7 (Compiled packages with JDK 1.5.x)</b>
+		<ul>
+			<li>Distributed bandled with Sun Java Comm v2.0 and RxTx as an option. Changed version number in order to avoid confusion.</li>
+		</ul>
+		<br><br>
+		<b>Version 2.0.6 (Compiled packages with JDK 1.5.x)</b>
+		<ul>
+			<li><b>jSMSEngine API</b>: Switched to Regular Expression for parsing GSM responses.</li>
+			<li><b>jSMSEngine API</b>: Status Report Messages: Added DateSent and DateReceived fields processing.</li>
+			<li><b>jSMSEngine API</b>: Modifications in SonyEricsson AT Handler for R380s.</li>
+		</ul>
+		<br><br>
+		<b>Version 2.0.5 (Compiled packages with JDK 1.5.x)</b>
+		<ul>
+			<li><b>jSMSEngine API</b>: <b>** The project is now distributed under the GPL v2 license **</b></li>
+			<li><b>jSMSEngine API</b>: <b>** The distribution contains newly released binaries of RxTx version 2.1.7 for Windows, Linux and Solaris. If you are upgrading from a previous version of jSMSEngine API, please remember to upgrade your RxTx binaries as well! **</b></li>
+			<li><b>jSMSEngine API</b>: Support for Validity Period setting. COutgoingMessage has a new method, <b>setValidityPeriod(int)</b> which sets the validity period in hours. Validity Period is relative, i.e. starts from the time the SMSC received the message.</li>
+			<li><b>jSMSEngine API</b>: Support for receiving multipart (concatenated) messages in 7bit encoding mode. Concatenated messages will be processed and reported as one big message by jSMSEngine API. Note that the process of the concatenated messages takes place in memory, so it *may* be possible to loose messages if jSMSEngine API is shutdown abnormally, during message processing.</li>
+			<li><b>jSMSEngine API</b>: Modified API method <b>deleteMessage()</b>. Now, it does not return any status.</li>
+			<li><b>jSMSEngine API</b>: Modifications in CSerialDriver.java for greater compatibility.</li>
+			<li><b>jSMSEngine API</b>: IMSI number is currently masked. You should uncomment the code in CService.java in order for IMSI reporting to work properly. This masking affects jSMSServer, examples and logs generated from the library. Not a bug or anything, but its a good thing to keep your IMSI private :) </li>
+			<li><b>jSMSEngine API (BUG: 1424789)</b>: In some cases, messages sent out were incorrectly encoded and an extra "@" character appeared as the last character at the recipient.</li>
+			<li><b>jSMSServer (BUG)</b>: An exception was thrown when the configuration item "phone.xml_out_queue" was defined but empty.</li>
+			<li><b>jSMSServer</b>: The table for outgoing messages is expected to have a few more fields: flash_sms, status_report, src_port, dst_port & validity_period. The values reflect the attributes of the message to be sent out. See README.txt in jSMSServer directory.</li>
+			<li><b>jSMSServer (BUG)</b>: If configurations items for XML queues were commented out (file jSMSServer.conf) exceptions were thrown, and the application automatically disconnected.</li>
+		</ul>
+		<br><br>
+		<b>Version 2.0.4 (Compiled packages with JDK 1.5.x)</b>
+		<ul>
+			<li><b>jSMSEngine API</b>: Starting from v2.0.4, jSMSEngine relies exclusively on RxTx project for its serial communication implementation. SUN JavaComm will no longer be distributed together with jSMSEngine (this is a relief - I always worried if I did the correct thing distributing SUN JavaComm v2.0...). A good thing is that from now on, there is one distribution file available for both Win32 and Linux installations. This file contains RxTx components for Win32 and Linux. As far as the jSMSEngine is concerned, the code is exactly the same for both platforms.</li>
+			<li><b>jSMSEngine API</b>: A new method of using the ASYNC receive mode has been introduced. Its based on interfaces and listeners. Old method (based on received() subclassing) has been marked depracated. Please review example ReadMessagesAsync.java application.
+			<li><b>jSMSEngine API (BUG)</b>: Minor bug in CService.disconnect() generating errors during ASYNC receive mode.
+		</ul>
+		<br><br>
+		<b>Version 2.0.3 (Compiled packages with JDK 1.5.x)</b>
+		<ul>
+			<li><b>jSMSEngine API</b>: Support for SMS messages with specific port addressing. For each outgoing message, you can define the Source and Destination port. Addressing is in 16bit mode only. Both ports (Source & Destination) should be defined. Please look at the "SendMessageWithPorts.java" example.</li>
+			<li><b>jSMSEngine API</b>: Support for flash SMS Messages. Please note that this kind of messaging is not supported by all phones. It is known to be supported by all Nokia models, a few Siemens and some other brands.</li>
+			<li><b>jSMSEngine API</b>: CIncomingMessage.java: setMessageEncoding() is called for incoming messages, so that the encoding information of the received message is available for these messages as well.
+			<li><b>jSMSEngine API</b>: Some minor modifications were made in CSerialDriver.java class.</li>
+			<li><b>jSMSEngine API</b>: Sony-Ericsson support: Modifications to the original code.</li>
+			<li><b>jSMSEngine API (BUG)</b>: jSMSEngine was leaving unterminated threads during ASYNC operation solved.</li>
+			<li><b>jSMSServer</b>: Added two configuration parameters "phone.batch_incoming" and "phone.batch_outgoing" which define the maximum number of inbound and outbound messages respectively. Each process cycle will read and send as many messages as these numbers define. Set to -1 for no-limit processing (NOT recommended - may congest GSM link).</li>
+			<li><b>jSMSServer</b>: Added configuration option "general.gui" to enable console mode as well as GUI mode.</li>
+			<li><b>jSMSServer (BUG)</b>: Wrong imports in source code.</li>
+		</ul>
+		<br><br>
+		<b>Version 2.0.2 (Compiled packages with JDK 1.5.x)</b>
+		<ul>
+			<li><b>jSMSEngine API</b>: <b>Experimental</b> support for Sony-Ericsson phones. Use "SonyEricsson" as manufacturer string for these modems. Please note that I don't have any SE device to test. I just integrated some code mentioned in the old SourceForge forums from friends who had access to SE models. If you encounter any problems, blame my poor implementation of their findings...</li>
+			<li><b>jSMSEngine API</b>: Bug in AT Hander code: redefinition of private variables. Strange, but this error would not always crash jSMSEngine...</li>
+			<li><b>jSMSServer</b>: New Console mode: When you set configuration option "general.gui=no" then jSMSServer is running in text/console mode. With "general.gui=yes", jSMSServer runs in graphical mode.</li>
+		</ul>
+		<br><br>
+		<b>Version 2.0.1 (Compiled packages with JDK 1.5.x)</b>
+		<br>
+		Bug fixing release.
+		<ul>
+			<li><b>jSMSEngine API</b>: API library crashed when used without the debug switch on.</li>
+		</ul>
+		<br><br>
+		<b>Version 2.0.0 (Compiled packages with JDK 1.5.x)</b>
+		<br>
+		<ul>
+			<li>This version has undergone some major design changes and it is <b>NOT</b> compatible with earlier versions. Key points are noted below:
+				<ul>
+					<li>ASCII/TEXT mode is <b>no longer supported</b>. Your GSM device must support the PDU mode in order to work. Most modern devices comply with PDU operation, so this won't be a major problem. ASCII mode was seldomly used and it is very problematic.</li>
+					<li>Most (if not all) methods of the main CService class no longer return error values but make use of exceptions. For this to work, some new exceptions are introduced: <b>AlreadyConnectedException</b>, <b>CannotDisableIndicationsException</b>, <b>InvalidPinException</b>, <b>NoPduSupportException</b>, <b>NoPinException</b>, <b>NoResponseException</b>, <b>NotConnectedException</b>. All are descendants of the <b>jSMSEngineException</b> exception.</li>
+					<li>jSMSServer is modified in order to comply with above changes. All of you who use jSMSEngine API in your own applications, should cater for the changes, by modifying your code accordingly.</li>
+				</ul>
+				You are kindly requested to move to the new version as soon as possible!
+			</li>
+			<li><b>jSMSEngine API</b>: Connect() method of jSMSEngine API now takes the manufacturer and model of the GSM device you are using as a parameter. This is closely related to custom AT handlers introduced. Please see bottom of page for more information on this.</li>
+			<li><b>jSMSEngine API</b>: I have added various stability enhancements, error handling, retry-on-error etc. Some features from the era of ASCII mode have been removed and this made jSMSEngine to respond faster. With the latest modifications, my Wavecom seems to run 24/7 for several days (with high traffic volume - some thousands of dispatched messages and tenths of incoming) without interruption.
+			<li><b>jSMSServer</b>: jSMSServer now support Microsoft SQL Server as a database.</li>
+			<li><b>jSMSServer</b>: Database schema has changed a bit: tables are renamed to "sms_in" and "sms_out" instead of "incoming" and "outgoing" respectively.</li>
+			<li><b>jSMSServer</b>: Messages sent are also saved in the database.</li>
+		</ul>
+	</font>
+</body>
+</html>
